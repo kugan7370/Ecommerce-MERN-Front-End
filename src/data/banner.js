@@ -10,7 +10,7 @@ export const banners = [
 
     {
         id: 3,
-        image: 'https://d2z2mkwk6fkehh.cloudfront.net/f2me/blog/Amazon%20Prime%20Day%20UK%202020/7c1d2a3e6d41310c769c04abc02fe853.jpg'
+        image: 'https://m.media-amazon.com/images/I/71qid7QFWJL._SX3000_.jpg'
     },
     {
         id: 3,

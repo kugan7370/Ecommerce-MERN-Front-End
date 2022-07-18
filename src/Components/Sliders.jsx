@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
-import { banners } from '../data/banner'
+
 import Categories from './Categories'
 
-function Sliders() {
+function Sliders({ datas }) {
   var settings = {
     dots: true,
     infinite: true,
@@ -15,14 +15,12 @@ function Sliders() {
   return (
     <Container>
       <Slider {...settings}>
-        {banners.map((banner) => (
+        {datas.map((banner) => (
           <ImageContainer key={banner.id}>
             <img src={banner.image} alt="" />
           </ImageContainer>
         ))}
       </Slider>
-
-      <Categories />
     </Container>
   )
 }
