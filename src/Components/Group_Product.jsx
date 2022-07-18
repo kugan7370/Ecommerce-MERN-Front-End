@@ -38,6 +38,16 @@ const InnerGrid = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 20px;
   grid-row-gap: 50px;
+
+  @media only screen and (max-width: 464px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  @media (min-width: 480px) and (max-width: 767px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 768px) and (max-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `
 const InnerContainer = styled.div`
   border-radius: 10px;
