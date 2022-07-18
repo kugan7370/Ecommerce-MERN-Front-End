@@ -1,9 +1,10 @@
 import Header from "./Components/Header";
 import styled from "styled-components";
+import Home from "./Components/Home";
 function App() {
   return (
     <Container>
-      <Header />
+      <Home />
     </Container>
   );
 }
