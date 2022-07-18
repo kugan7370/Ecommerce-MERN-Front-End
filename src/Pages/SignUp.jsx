@@ -154,6 +154,11 @@ const MainContainer = styled.div`
   width: 30%;
   margin: auto;
   margin-top: 50px;
+  @media only screen and (max-width: 767px) {
+    width: 100%;
+    margin: 0;
+    margin-top: 50px;
+  }
 `
 const ImageContainer = styled.div`
   height: 80px;
@@ -172,6 +177,10 @@ const Container = styled.div`
 
   h3 {
     text-align: center;
+  }
+  @media only screen and (max-width: 767px) {
+    border: none;
+    border-top: 1px solid gray;
   }
 `
 const FormContainer = styled.div`
