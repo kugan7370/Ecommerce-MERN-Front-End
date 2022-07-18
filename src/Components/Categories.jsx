@@ -61,8 +61,7 @@ const ItemContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 20px;
-
-  box-shadow: 10px 10px 10px white;
+  /* box-shadow: 200px 150px 100px white; */
 
   @media only screen and (max-width: 767px) {
     grid-template-columns: repeat(1, 1fr);

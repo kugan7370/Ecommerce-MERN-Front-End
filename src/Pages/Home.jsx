@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from './Header'
-import Sliders from './Sliders'
+import Header from '../Components/Header'
+import Sliders from '../Components/Sliders'
 
 function Home() {
   return (

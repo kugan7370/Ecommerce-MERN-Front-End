@@ -1,15 +1,36 @@
 import Header from "./Components/Header";
 import styled from "styled-components";
-import Home from "./Components/Home";
+import Home from "./Pages/Home"
+import { Routes, Route } from 'react-router-dom';
+import SignIn from "./Pages/SignIn";
+import SignUp from "./Pages/SignUp";
 function App() {
+
+
+  const user = false
   return (
-    <Container>
-      <Home />
-    </Container>
+
+
+
+    <Routes>
+      {!user ? (
+        <>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </>
+      ) : (
+        <>
+          <Route path="/" element={<Home />} />
+
+        </>
+      )
+      }
+    </Routes>
+
+
   );
 }
 
-const Container = styled.div`
-width: 100vw;
-`
+
+
 export default App;
