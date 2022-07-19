@@ -2,7 +2,16 @@ import React from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  user_login_Failed,
+  user_login_request,
+  user_login_Success,
+} from '../Redux/User/UserSlicer'
+
 const logoImg =
   'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1200px-Amazon_logo.svg.png'
 
@@ -15,6 +24,23 @@ const SignupSchema = Yup.object().shape({
 })
 
 function SignIn() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { current_user } = useSelector((state) => state.user)
+
+  const handleSubmit = async (Password, email) => {
+    try {
+      dispatch(user_login_request())
+      await axios.post('auth/login', { Password, email }).then((result) => {
+        dispatch(user_login_Success(result.data))
+        navigate('/')
+      })
+    } catch (error) {
+      dispatch(user_login_Failed())
+    }
+  }
+
   return (
     <MainContainer>
       <ImageContainer>
@@ -30,7 +56,7 @@ function SignIn() {
           validationSchema={SignupSchema}
           onSubmit={(values) => {
             // same shape as initial values
-            console.log(values)
+            handleSubmit(values.Password, values.email)
           }}
         >
           {({ errors, touched, validateOnChange, values, validateOnBlur }) => (

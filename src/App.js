@@ -5,17 +5,18 @@ import { Routes, Route } from 'react-router-dom';
 import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
 import Products from "./Pages/Products";
+import { useSelector } from "react-redux";
 
 function App() {
 
 
-  const user = true
+  const { current_user } = useSelector((state) => state.user)
   return (
     <>
 
-      {user && <Header />}
+      {current_user && <Header />}
       <Routes>
-        {!user ? (
+        {!current_user ? (
           <>
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />

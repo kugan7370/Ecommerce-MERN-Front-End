@@ -1,13 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import { BsSearch, BsCartPlusFill } from 'react-icons/bs'
+import { useDispatch, useSelector } from 'react-redux'
+import { user_logout } from '../Redux/User/UserSlicer'
+import { Navigate, useNavigate } from 'react-router-dom'
 const logoImg = 'https://pngimg.com/uploads/amazon/amazon_PNG11.png'
 
 function Header() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { current_user } = useSelector((state) => state.user)
+  const logout = () => {
+    dispatch(user_logout())
+    navigate('/signin')
+  }
   return (
     <Container>
       <InnerContainer>
-        <Logo>
+        <Logo onClick={logout}>
           <img src={logoImg} alt="logo" />
         </Logo>
         <Search>
@@ -18,7 +28,11 @@ function Header() {
         </Search>
         <Auth>
           <h3>Hello, Guest</h3>
-          <h3>Sign in</h3>
+          {current_user ? (
+            <h3>{current_user.user.username}</h3>
+          ) : (
+            <h3>Sign In</h3>
+          )}
 
           <Cart>
             <BsCartPlusFill className="card-icon" />
