@@ -30,13 +30,15 @@ function Categories({ datas }) {
     <Container>
       <Carousel responsive={responsive}>
         {datas.map((cat, i) => (
-          <InnerContainer key={cat.id}>
+          <InnerContainer key={cat._id}>
             <Title>
               <h2>{cat.category}</h2>
             </Title>
-            <ImageContainer>
-              <img src={cat.image} alt="" />
-            </ImageContainer>
+            <Link to={`/category/${cat._id}`}>
+              <ImageContainer>
+                <img src={cat.image} alt="" />
+              </ImageContainer>
+            </Link>
             <Link className="show_more" to={'/category/:id'}>
               <p>{i % 2 == 0 ? 'See more' : 'Show more'}</p>
             </Link>

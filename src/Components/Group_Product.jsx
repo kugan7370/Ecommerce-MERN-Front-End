@@ -6,15 +6,15 @@ function Group_Product({ datas }) {
   return (
     <Container>
       <InnerGrid>
-        {datas.map((cat, i) => (
-          <InnerContainer key={cat.id}>
+        {datas.map((product, i) => (
+          <InnerContainer key={product._id}>
             <ImageContainer>
-              <img src={cat.image} alt="" />
+              <img src={product.image} alt="" />
             </ImageContainer>
             <TextContainer>
-              <h4>{cat.name}</h4>
-              <h5>{cat.price}</h5>
-              <Rating name="read-only" value={cat.rating} readOnly />
+              <h4>{product.name}</h4>
+              <h5>{`$ ${product.price}`}</h5>
+              <Rating name="read-only" value={product.rating} readOnly />
             </TextContainer>
             <AddCardButton>
               <h4>Add card</h4>

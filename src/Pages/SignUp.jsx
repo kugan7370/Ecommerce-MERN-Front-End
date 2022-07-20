@@ -2,7 +2,8 @@ import React from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 const logoImg =
   'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1200px-Amazon_logo.svg.png'
 
@@ -24,6 +25,23 @@ const SignupSchema = Yup.object().shape({
 })
 
 function SignUp() {
+  const navigate = useNavigate()
+  const handleSubmit = async (values) => {
+    const { Password, YourName, email, Re_enter_password } = values
+    try {
+      await axios
+        .post('auth/register', {
+          username: YourName,
+          email,
+          Password,
+          ConfirmPassword: Re_enter_password,
+        })
+        .then(() => navigate('/signin'))
+    } catch (error) {
+      alert(error)
+    }
+  }
+
   return (
     <MainContainer>
       <ImageContainer>
@@ -39,10 +57,7 @@ function SignUp() {
             email: '',
           }}
           validationSchema={SignupSchema}
-          onSubmit={(values) => {
-            // same shape as initial values
-            console.log(values)
-          }}
+          onSubmit={(values) => handleSubmit(values)}
         >
           {({ errors, touched, validateOnChange, values, validateOnBlur }) => (
             <Form>

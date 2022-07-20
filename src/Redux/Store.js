@@ -10,6 +10,8 @@ import {
     REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import CategoryReducer from './Admin/CategorySlicer'
+import ProductReducer from './Admin/ProductSlicer'
 import UserReducer from './User/UserSlicer'
 
 
@@ -20,7 +22,9 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-    user: UserReducer
+    user: UserReducer,
+    category: CategoryReducer,
+    product: ProductReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

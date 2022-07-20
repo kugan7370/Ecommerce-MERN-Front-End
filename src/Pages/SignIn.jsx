@@ -27,7 +27,11 @@ function SignIn() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { current_user } = useSelector((state) => state.user)
+  const { current_user, error } = useSelector((state) => state.user)
+
+  if (error) {
+    alert('check your email and password')
+  }
 
   const handleSubmit = async (Password, email) => {
     try {
