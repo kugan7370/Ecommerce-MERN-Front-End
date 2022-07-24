@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BsSearch, BsCartPlusFill } from 'react-icons/bs'
+import { BsSearch } from 'react-icons/bs'
+import { CgShoppingCart } from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
 import { user_logout } from '../Redux/User/UserSlicer'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, NavLink, useNavigate } from 'react-router-dom'
 const logoImg = 'https://pngimg.com/uploads/amazon/amazon_PNG11.png'
 
 function Header() {
@@ -14,12 +15,15 @@ function Header() {
     dispatch(user_logout())
     navigate('/signin')
   }
+
   return (
     <Container>
       <InnerContainer>
-        <Logo onClick={logout}>
-          <img src={logoImg} alt="logo" />
-        </Logo>
+        <Link to={'/'}>
+          <Logo>
+            <img src={logoImg} alt="logo" />
+          </Logo>
+        </Link>
         <Search>
           <input type="text" placeholder="Search" />
           <IconContainer>
@@ -29,13 +33,20 @@ function Header() {
         <Auth>
           <h3>Hello, Guest</h3>
           {current_user ? (
-            <h3>{current_user.user.username}</h3>
+            <h3 onClick={logout}>{current_user.user.username}</h3>
           ) : (
             <h3>Sign In</h3>
           )}
 
           <Cart>
-            <BsCartPlusFill className="card-icon" />
+            <Link to={'/cartItems'}>
+              <CgShoppingCart className="card-icon" />
+            </Link>
+            {current_user && (
+              <CartCount_Container>
+                <CartCount>{current_user.user.product_id.length}</CartCount>
+              </CartCount_Container>
+            )}
           </Cart>
         </Auth>
       </InnerContainer>
@@ -54,10 +65,12 @@ const Container = styled.div`
   background-color: #131921;
   color: white;
   width: 100vw;
-  position: relative;
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   padding: 10px 0px;
+  z-index: 999;
 
   @media only screen and (max-width: 767px) {
     flex-direction: column;
@@ -132,6 +145,7 @@ const Auth = styled.div`
     color: white;
     font-weight: bold;
     padding: 10px;
+    cursor: pointer;
   }
   &:nth-child(1) {
     margin-right: 10px;
@@ -140,10 +154,13 @@ const Auth = styled.div`
 const Cart = styled.div`
   margin-right: 20px;
   padding: 10px;
+  margin-top: 10px;
 
   .card-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    color: white;
   }
 `
 const MobileSearch = styled.div`
@@ -166,6 +183,27 @@ const MobileSearch = styled.div`
   @media only screen and (min-width: 768px) {
     display: none;
   }
+`
+const CartCount_Container = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffa41c;
+  top: 10px;
+  right: 30px;
+  text-align: center;
+
+  @media only screen and (max-width: 767px) {
+    top: 20px;
+  }
+`
+
+const CartCount = styled.h5`
+  color: white;
 `
 
 export default Header

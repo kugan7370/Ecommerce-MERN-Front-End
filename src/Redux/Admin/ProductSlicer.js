@@ -24,10 +24,8 @@ const ProductSlicer = createSlice({
             state.loading = false;
             state.products = null;
             state.error = true;
+        },
 
-
-
-        }
     }
 });
 

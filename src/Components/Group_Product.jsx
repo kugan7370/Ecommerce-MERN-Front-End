@@ -1,8 +1,28 @@
 import { Rating } from '@mui/material'
+import axios from 'axios'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { user_addbasket } from '../Redux/User/UserSlicer'
 
 function Group_Product({ datas }) {
+  const dispatch = useDispatch()
+  const { current_user } = useSelector((state) => state.user)
+
+  const addCard = async (product_id) => {
+    try {
+      if (current_user.user.product_id.includes(product_id)) {
+        alert('product already added')
+      } else {
+        await axios
+          .put(`/user/addbasket/${product_id}`)
+          .then(() => dispatch(user_addbasket(product_id)))
+      }
+    } catch (error) {
+      alert(error)
+    }
+  }
+
   return (
     <Container>
       <InnerGrid>
@@ -16,7 +36,7 @@ function Group_Product({ datas }) {
               <h5>{`$ ${product.price}`}</h5>
               <Rating name="read-only" value={product.rating} readOnly />
             </TextContainer>
-            <AddCardButton>
+            <AddCardButton onClick={() => addCard(product._id)}>
               <h4>Add card</h4>
             </AddCardButton>
           </InnerContainer>

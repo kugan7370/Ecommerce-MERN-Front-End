@@ -7,10 +7,12 @@ import SignUp from "./Pages/SignUp";
 import Products from "./Pages/Products";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import Cart_Items from "./Pages/Cart_Items";
 
 function App() {
   const navigate = useNavigate()
   const { current_user } = useSelector((state) => state.user)
+  // console.log(current_user);
   useEffect(() => {
     current_user ? navigate('/') : navigate("/signin")
 
@@ -33,6 +35,7 @@ function App() {
 
             <Route path="/" element={<Home />} />
             <Route path="/category/:id" element={<Products />} />
+            <Route path="/cartItems" element={<Cart_Items />} />
 
           </>
         )
