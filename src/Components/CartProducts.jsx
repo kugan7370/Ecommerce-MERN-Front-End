@@ -2,48 +2,55 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { user_getbasket, user_removebasket } from '../Redux/User/UserSlicer'
+import {
+  user_getbasket,
+  user_multi_addbasket,
+  user_removebasket,
+} from '../Redux/User/UserSlicer'
 import { HiPlusCircle, HiMinusCircle } from 'react-icons/hi'
-function CartProducts({ cart_id }) {
-  const { loading, products, error } = useSelector((state) => state.product)
-  const [product_list, setproduct_list] = useState()
 
-  const dispatch = useDispatch()
+function CartProducts({ cartdata }) {
+  // const { current_user } = useSelector((state) => state.user)
+  // const { loading, products, error } = useSelector((state) => state.product)
+  // const [product_list, setproduct_list] = useState([])
+  // const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (products) {
-      setproduct_list(products.filter((product) => product._id == cart_id))
-    }
-  }, [cart_id])
+  // useEffect(() => {
+  //   if (products) {
+  //     setproduct_list(products.filter((product) => product._id == cart_id))
+  //   }
+  // }, [cart_id])
 
-  //   useEffect(() => {
-  //     dispatch(user_getbasket())
-  //   }, [cart_id])
+  // const removeItems = async (item_id) => {}
 
-  const removeItems = async (item_id) => {
-    try {
-      await axios
-        .put(`/user/removebasket/${item_id}`)
-        .then(() => dispatch(user_removebasket(item_id)))
-    } catch (error) {
-      alert(error)
-    }
-  }
+  // const addMultiProduct = async (item_id) => {}
 
   return (
     <>
-      {product_list && (
+      {cartdata && (
         <CardItem>
           <ImageContainer>
-            <img src={product_list[0].image} alt="" />
+            <img src={cartdata.image} alt="" />
           </ImageContainer>
           <ItemDetails>
-            <h4>{product_list[0].desc}</h4>
-            <h5>{`$ ${product_list[0].price}`}</h5>
+            <h4>{cartdata.desc}</h4>
+            <h5>{`$ ${cartdata.price}`}</h5>
+            <ButtonContainer>
+              <button>remove</button>
 
-            <button onClick={() => removeItems(product_list[0]._id)}>
-              remove
-            </button>
+              <CountContainer>
+                <HiMinusCircle className="minusicons" color="#ffd814" />
+
+                <span>{cartdata.quantity}</span>
+
+                <HiPlusCircle className="plus_icons" color="#ffd814" />
+              </CountContainer>
+            </ButtonContainer>
+            <PriceContainer>
+              <TotalPrice>{`$ ${
+                cartdata.quantity * cartdata.price
+              }`}</TotalPrice>
+            </PriceContainer>
           </ItemDetails>
         </CardItem>
       )}
@@ -90,3 +97,26 @@ const ItemDetails = styled.div`
     padding: 10px;
   }
 `
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const CountContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  .minusicons {
+    margin-right: 20px;
+  }
+  .plus_icons {
+    margin-left: 20px;
+  }
+`
+const PriceContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
+  margin-right: 10px;
+`
+const TotalPrice = styled.h6``

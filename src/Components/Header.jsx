@@ -1,20 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { BsSearch } from 'react-icons/bs'
 import { CgShoppingCart } from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
 import { user_logout } from '../Redux/User/UserSlicer'
 import { Link, Navigate, NavLink, useNavigate } from 'react-router-dom'
+import {
+  getCartProducts_Failure,
+  getCartProducts_Request,
+  getCartProducts_Success,
+} from '../Redux/User/CartSlicer'
+import axios from 'axios'
 const logoImg = 'https://pngimg.com/uploads/amazon/amazon_PNG11.png'
 
 function Header() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { current_user } = useSelector((state) => state.user)
+  const { cartProducts } = useSelector((state) => state.cart)
   const logout = () => {
     dispatch(user_logout())
     navigate('/signin')
   }
+
+  useEffect(() => {
+    const getCartProducts = async () => {
+      try {
+        dispatch(getCartProducts_Request())
+        await axios
+          .get('/user/getcartproduct')
+          .then((res) => dispatch(getCartProducts_Success(res.data)))
+      } catch (error) {
+        dispatch(getCartProducts_Failure())
+      }
+    }
+    getCartProducts()
+  }, [])
 
   return (
     <Container>
@@ -42,11 +63,10 @@ function Header() {
             <Link to={'/cartItems'}>
               <CgShoppingCart className="card-icon" />
             </Link>
-            {current_user && (
-              <CartCount_Container>
-                <CartCount>{current_user.user.product_id.length}</CartCount>
-              </CartCount_Container>
-            )}
+
+            <CartCount_Container>
+              {cartProducts && <CartCount>{cartProducts.length}</CartCount>}
+            </CartCount_Container>
           </Cart>
         </Auth>
       </InnerContainer>

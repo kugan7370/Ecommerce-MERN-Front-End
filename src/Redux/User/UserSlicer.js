@@ -30,27 +30,9 @@ const UserSlicer = createSlice({
             state.current_user = null;
             state.error = null;
         },
-        user_addbasket: (state, actions) => {
-            state.current_user.user.product_id.includes(actions.payload) ? state.current_user.user.product_id = [...state.current_user.user.product_id] : state.current_user.user.product_id.push(actions.payload)
-
-        },
-        user_multi_addbasket: (state, actions) => {
-            state.current_user.user.product_id.push(actions.payload)
-
-        },
-        user_getbasket: (state) => {
-            state.current_user.user.product_id = [...state.current_user.user.product_id]
-
-        },
-        user_removebasket: (state, actions) => {
-            state.current_user.user.product_id = [...state.current_user.user.product_id.filter((id) => id != actions.payload)]
-
-        },
-
-
     }
 });
 
-export const { user_login_request, user_login_Success, user_login_Failed, user_logout, user_addbasket, user_getbasket, user_removebasket, user_multi_addbasket } = UserSlicer.actions
+export const { user_login_request, user_login_Success, user_login_Failed, user_logout } = UserSlicer.actions
 
 export default UserSlicer.reducer
