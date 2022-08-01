@@ -26,7 +26,7 @@ function ProductDetails() {
   const [productDetails, setproductDetails] = useState()
   const [quantityCount, setQuantityCount] = useState(1)
   const [statechange, setstatechange] = useState(false)
-
+  const { cartProducts } = useSelector((state) => state.cart)
 
   console.log(productDetails)
 
@@ -52,7 +52,16 @@ function ProductDetails() {
       await axios
         .put(`/user/addbasket/${productDetails._id}`, {
           quantityCount,
-        }).then(()=>setstatechange(!statechange))
+        }).then(() => setstatechange(!statechange)).then(() => {
+          if (cartProducts && productDetails) {
+            let cart_ids = []
+            cartProducts.map((item) => {
+              cart_ids.push(item.productId)
+            
+            })
+            cart_ids.includes(productDetails._id) && alert("Already Added")
+          }
+        })
        
     } catch (error) {
       console.log(error)
