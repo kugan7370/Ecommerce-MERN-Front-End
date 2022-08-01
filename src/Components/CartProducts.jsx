@@ -8,22 +8,73 @@ import {
   user_removebasket,
 } from '../Redux/User/UserSlicer'
 import { HiPlusCircle, HiMinusCircle } from 'react-icons/hi'
+import { getCartProducts_Failure, getCartProducts_Request, getCartProducts_Success } from '../Redux/User/CartSlicer'
 
 function CartProducts({ cartdata }) {
-  // const { current_user } = useSelector((state) => state.user)
-  // const { loading, products, error } = useSelector((state) => state.product)
-  // const [product_list, setproduct_list] = useState([])
-  // const dispatch = useDispatch()
+  const [statechange, setstatechange] = useState(false)
+  // const [stateAdd, setstateAdd] = useState(false)
+  // const [stateRemove, setstateRemove] = useState(false)
+  const [quantityCount, setQuantityCount] = useState(cartdata.quantity)
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   if (products) {
-  //     setproduct_list(products.filter((product) => product._id == cart_id))
-  //   }
-  // }, [cart_id])
 
-  // const removeItems = async (item_id) => {}
+  const RemoveCart = async (prouduct_id) => {
+    try {
+      await axios
+        .delete(`/user/removebasket/${prouduct_id}`
+         
+        ).then(()=>setstatechange(!statechange))
+       
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-  // const addMultiProduct = async (item_id) => {}
+
+  useEffect(() => {
+    const getCartProducts = async () => {
+      try {
+        dispatch(getCartProducts_Request())
+        await axios
+          .get('/user/getcartproduct')
+          .then((res) => dispatch(getCartProducts_Success(res.data)))
+      } catch (error) {
+        dispatch(getCartProducts_Failure())
+      }
+    }
+    getCartProducts()
+  }, [statechange])
+  
+
+
+  const handleQuantity = async(type,productId) => {
+    if (type == 'remove') {
+      quantityCount > 1 && setQuantityCount(quantityCount - 1)
+      try {
+        quantityCount > 1&& await axios
+          .put(`/user/addbasket/${productId}`, {
+            quantityCount:quantityCount - 1,
+          }).then(()=>setstatechange(!statechange))
+         
+      } catch (error) {
+        console.log(error)
+      }
+    } if(type == 'add') {
+      setQuantityCount(quantityCount + 1)
+      try {
+        await axios
+          .put(`/user/addbasket/${productId}`, {
+            quantityCount:quantityCount + 1,
+          }).then(()=>setstatechange(!statechange))
+         
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+
+
 
   return (
     <>
@@ -36,14 +87,15 @@ function CartProducts({ cartdata }) {
             <h4>{cartdata.desc}</h4>
             <h5>{`$ ${cartdata.price}`}</h5>
             <ButtonContainer>
-              <button>remove</button>
+
+              <button  onClick={()=>RemoveCart(cartdata._id)} >remove</button>
 
               <CountContainer>
-                <HiMinusCircle className="minusicons" color="#ffd814" />
+                <HiMinusCircle onClick={ ()=>handleQuantity("remove",cartdata._id)} className="minusicons" color="#ffd814" />
 
-                <span>{cartdata.quantity}</span>
+                <span>{quantityCount}</span>
 
-                <HiPlusCircle className="plus_icons" color="#ffd814" />
+                <HiPlusCircle onClick={()=>handleQuantity("add",cartdata._id)} className="plus_icons" color="#ffd814" />
               </CountContainer>
             </ButtonContainer>
             <PriceContainer>

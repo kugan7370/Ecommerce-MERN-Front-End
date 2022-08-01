@@ -17,6 +17,7 @@ function Cart_Items() {
     const { products } = useSelector((state) => state.product)
     const [finalcartProducts, setFinalcartProducts] = useState()
     const [totalPrice, setTotalPrice] = useState()
+    const [totalQuantity, settotalQuantity] = useState()
 
 
     useEffect(() => {
@@ -62,6 +63,19 @@ function Cart_Items() {
         }
     }, [cartProducts, products])
 
+    useEffect(() => {
+
+        // console.log(finalcartProducts);
+        if (finalcartProducts) {
+            let totalQuantity = []
+            finalcartProducts.map((item) => {
+                totalQuantity.push(item.quantity)
+            })
+            settotalQuantity(totalQuantity.reduce((a, b) => a + b))
+        }
+
+
+    }, [finalcartProducts, cartProducts])
 
 
 
@@ -74,7 +88,7 @@ function Cart_Items() {
             <PriceListContainer  >
                 <PriceList>
 
-                    <ProductCount>Total Numer: {finalcartProducts ? finalcartProducts.length : 0}</ProductCount>
+                    <ProductCount>Total Numer: {totalQuantity ? totalQuantity : 0}</ProductCount>
                     <CurrencyFormat value={totalPrice ? totalPrice : 0} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <h4>Total Price: {value}</h4>} />
                 </PriceList>
             </PriceListContainer>

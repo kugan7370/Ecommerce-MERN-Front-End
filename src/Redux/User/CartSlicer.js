@@ -26,6 +26,12 @@ const CartSlicer = createSlice({
             state.error = true
         },
 
+        // RemoveCartProducts_Success: (state, actions) => {
+        //     state.loading = false;
+        //     state.cartProducts = actions.payload;
+        //     state.error = false
+        // },
+
 
     }
 });

@@ -12,6 +12,8 @@ import {
 import axios from 'axios'
 import {
   addCartProducts,
+  getCartProducts_Failure,
+  getCartProducts_Request,
   getCartProducts_Success,
 } from '../Redux/User/CartSlicer'
 import Header from '../Components/Header'
@@ -23,6 +25,8 @@ function ProductDetails() {
   const { loading, products, error } = useSelector((state) => state.product)
   const [productDetails, setproductDetails] = useState()
   const [quantityCount, setQuantityCount] = useState(1)
+  const [statechange, setstatechange] = useState(false)
+
 
   console.log(productDetails)
 
@@ -48,16 +52,28 @@ function ProductDetails() {
       await axios
         .put(`/user/addbasket/${productDetails._id}`, {
           quantityCount,
-        })
-        .then(async () => {
-          await axios
-            .get('user/getcartproduct')
-            .then((res) => dispatch(getCartProducts_Success(res.data)))
-        })
+        }).then(()=>setstatechange(!statechange))
+       
     } catch (error) {
       console.log(error)
     }
   }
+
+
+
+  useEffect(() => {
+    const getCartProducts = async () => {
+      try {
+        dispatch(getCartProducts_Request())
+        await axios
+          .get('/user/getcartproduct')
+          .then((res) => dispatch(getCartProducts_Success(res.data)))
+      } catch (error) {
+        dispatch(getCartProducts_Failure())
+      }
+    }
+    getCartProducts()
+  },[statechange])
 
   return (
     <>
