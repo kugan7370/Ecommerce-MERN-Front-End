@@ -11,6 +11,7 @@ import {
   user_login_request,
   user_login_Success,
 } from '../Redux/User/UserSlicer'
+import toast from 'react-hot-toast'
 
 const logoImg =
   'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1200px-Amazon_logo.svg.png'
@@ -30,7 +31,10 @@ function SignIn() {
   const { current_user, error } = useSelector((state) => state.user)
 
   if (error) {
-    alert('check your email and password')
+    toast.error('check your email and password', {
+      position: 'bottom-right'
+    })
+
   }
 
   const handleSubmit = async (Password, email) => {
@@ -71,13 +75,12 @@ function SignIn() {
                     Email
                   </label>
                   <Field
-                    className={`Field ${
-                      errors.email && touched.email
-                        ? 'FieldError'
-                        : touched.email
+                    className={`Field ${errors.email && touched.email
+                      ? 'FieldError'
+                      : touched.email
                         ? 'FieldSuccess'
                         : null
-                    }`}
+                      }`}
                     name="email"
                     type="email"
                   />
@@ -91,13 +94,12 @@ function SignIn() {
                     Password
                   </label>
                   <Field
-                    className={`Field ${
-                      errors.Password && touched.Password
-                        ? 'FieldError'
-                        : touched.Password
+                    className={`Field ${errors.Password && touched.Password
+                      ? 'FieldError'
+                      : touched.Password
                         ? 'FieldSuccess'
                         : null
-                    }`}
+                      }`}
                     name="Password"
                     type="password"
                   />
